@@ -1,4 +1,10 @@
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
+
+def prettify(xml_string):
+    """Επιστρέφει όμορφα διαμορφωμένο XML."""
+    parsed = minidom.parseString(xml_string)
+    return parsed.toprettyxml(indent="  ")
 
 def convert_xml(input_xml):
     root = ET.fromstring(input_xml)
@@ -15,7 +21,7 @@ def convert_xml(input_xml):
     ET.SubElement(transfer, "paxName").text = booking.find("Customer_name").text
     ET.SubElement(transfer, "pickupDate").text = booking.find("DepartureDate").text
 
-    return ET.tostring(transfers, encoding="unicode")
+    return prettify(ET.tostring(transfers, encoding="unicode"))
 
 # Δοκιμή
 if __name__ == "__main__":
